@@ -2,7 +2,7 @@
 
 A project to show the use of tests in Flutter. This project uses the Pexels API and you must have an authorization key to access the Pexels API. Ensure to get your [API key](https://www.pexels.com/api/documentation/).
 
-# (Complete Guide to Tests in Flutter)[https://brewyourtech.com/complete-guide-to-tests-in-flutter/]
+# [Complete Guide to Tests in Flutter](https://brewyourtech.com/complete-guide-to-tests-in-flutter/)
 
 ## Getting Started
 
