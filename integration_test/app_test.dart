@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 
-import 'package:tests_flutter/main.dart' as app;
 import 'package:tests_flutter/pages/home_page.dart';
 import 'package:tests_flutter/pages/search_page.dart';
 
@@ -13,52 +12,38 @@ void main() {
   if (binding is LiveTestWidgetsFlutterBinding) {
     binding.framePolicy = LiveTestWidgetsFlutterBindingFramePolicy.fullyLive;
   }
-  group("end to end test", () {
-    testWidgets("Test to Check the Curated Page Flow", (tester) async {
-      await tester.pumpWidget(MaterialApp(home: HomePage()));
-      await tester.pumpAndSettle();
-      addDelay(1000);
+  testWidgets("Test to Check the Curated Page Flow", (tester) async {
+    await tester.pumpWidget(const MaterialApp(home: HomePage()));
+    await tester.pumpAndSettle();
+    addDelay(2000);
 
-      await tester.tap(find.byKey(const ValueKey(0)));
-      await tester.pumpAndSettle();
-      addDelay(1000);
+    // Open the Image in Full Screen
+    await tester.tap(find.byKey(const ValueKey(0)));
+    await tester.pumpAndSettle();
+    addDelay(1000);
 
-      await tester.tap(find.byIcon(Icons.arrow_back));
-      await tester.pumpAndSettle();
+    // Go Back to HomePage
+    await tester.tap(find.byIcon(Icons.arrow_back));
+    await tester.pumpAndSettle();
 
-      await tester.tap(find.byType(FloatingActionButton));
-      await tester.pumpAndSettle();
-      addDelay(1000);
+    // Go to Search Page
+    await tester.tap(find.byType(FloatingActionButton));
+    await tester.pumpAndSettle();
+    addDelay(1000);
+ 
+    // Assert to check we are on the right page
+    expect(find.byType(TextField), findsOneWidget);
 
-      expect(find.byType(TextField), findsOneWidget);
-    });
-    testWidgets("Test to Check the Search Page flow", (tester) async {
-      await tester.pumpWidget(
-        const MaterialApp(
-          home: SearchPage(),
-        ),
-      );
-      await tester.pumpAndSettle();
+    await tester.enterText(find.byType(TextField), "Trees");
+    await tester.tap(find.byKey(SearchPage.searchIconButtonKey));
 
-      await addDelay(2000);
-      await tester.enterText(find.byType(TextField), "Trees");
-      await tester.tap(find.byType(IconButton));
+    addDelay(2000);
+    await tester.pumpAndSettle();
 
-      await addDelay(2000);
-      await tester.pumpAndSettle();
+    // Assert that we get Results
+    expect(find.byType(Image), findsWidgets);
 
-      expect(find.byType(Image), findsWidgets);
-      await addDelay(2000);
-
-      var finder = find.byKey(const ValueKey(0));
-      Image parentImage = tester.widget(finder);
-
-      await tester.tap(finder);
-      await tester.pumpAndSettle();
-
-      Image img = tester.widget(find.byType(Image));
-      expect(parentImage.image, img.image);
-    });
+    addDelay(2000);
   });
 }
 

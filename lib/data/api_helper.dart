@@ -21,8 +21,9 @@ Future<void> getImageFromQuery(String query) async {
   );
 
   PexelsSearchResult result = pexelsSearchResultFromJson(response.body);
-  searchStream.sink.add(result);
   debugPrint(result.toString());
+
+  searchStream.sink.add(result);
 }
 
 Future<List<PexelsImage>> getCuratedImages() async {

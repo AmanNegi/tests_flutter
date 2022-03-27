@@ -6,7 +6,7 @@ import 'full_screen_image.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
-
+  static const Key searchIconButtonKey = ValueKey("IconButton01");
   @override
   State<SearchPage> createState() => _SearchPageState();
 }
@@ -40,6 +40,7 @@ class _SearchPageState extends State<SearchPage> {
               decoration: InputDecoration(
                 border: const OutlineInputBorder(),
                 suffixIcon: IconButton(
+                  key: SearchPage.searchIconButtonKey,
                   icon: const Icon(Icons.search),
                   onPressed: () async {
                     isSearching = true;

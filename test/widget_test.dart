@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:tests_flutter/data/api_helper.dart';
+import 'package:tests_flutter/models/pexels_image.dart';
 import 'package:tests_flutter/pages/search_page.dart';
 
 //* Given When Then
@@ -16,23 +17,26 @@ void main() {
 
   //! Unit Test
   test(
-      "GIVEN Trees as a query WHEN the API is called THEN check if we receive any data",
+      "Check if the RandomImages API and JSON to model conversion is working fine",
+      () async {
+    List<PexelsImage> imagesList;
+    imagesList = await getCuratedImages();
+    expect(imagesList, isNotNull);
+  });
+
+  test(
+      "When given Trees as query to the Search Image function check if any output is printed",
       () async {
     await getImageFromQuery("trees");
   });
 
   test(
-      "GIVEN the curated API WHEN the API is called THEN check if we receive any data",
-      () async {
-    await getCuratedImages();
-  });
-
-  test(
-      "GIVEN Trees as query WHEN data is added to stream THEN check if the value is received in Stream",
+      "When trees images are searched check if values are received in the stream",
       () async {
     StreamSubscription subs = searchStream.stream.listen(null);
     subs.onData((data) {
       debugPrint("Received Data");
+      expect(data, isNotNull);
       subs.cancel();
     });
     await getImageFromQuery("trees");
@@ -42,8 +46,7 @@ void main() {
 
   //! Widget Testing
 
-  testWidgets(
-      "GIVEN Trees as a query WHEN the query is made THEN Check if the images are loaded",
+  testWidgets("When given trees as query check if the images are loaded",
       (tester) async {
     await tester.runAsync(() async {
       await tester.pumpWidget(const MaterialApp(home: SearchPage()));
